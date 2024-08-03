@@ -89,10 +89,33 @@
         #popup-form button.cancel {
             background-color: red;
         }
+        /* Styles pour les boutons de connexion et d'inscription */
+        .auth-buttons {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+        }
+        .auth-buttons button {
+            margin: 5px;
+            padding: 10px 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .auth-buttons button:hover {
+            background-color: darkblue;
+        }
     </style>
 </head>
 <body>
     <div id="mapid"></div>
+    <div class="auth-buttons">
+        <button onclick="window.location.href='connexion/index.html'">Connexion</button>
+        <button onclick="window.location.href='connexion/index.html'">Inscription</button>
+    </div>
     <button id="locate-button">
         <i class="fas fa-crosshairs"></i>
     </button>
@@ -128,7 +151,7 @@
             });
 
             var spotIcon = L.icon({
-                iconUrl: 'marqeur_jaune.png', // Assurez-vous que le chemin est correct
+                iconUrl: 'marqeur_jaune.png',
                 iconSize: [25, 25],
                 iconAnchor: [12, 24],
                 popupAnchor: [0, -24]
@@ -158,7 +181,6 @@
                 }
             }
 
-            // Essayer de localiser l'utilisateur dès le chargement de la page
             locateUser();
 
             document.getElementById('locate-button').onclick = function() {
@@ -212,36 +234,3 @@
                 };
 
                 document.querySelector('.cancel').onclick = function() {
-                    form.style.display = 'none';
-                    overlay.style.display = 'none';
-                    document.getElementById('spot-form').reset();
-                    spotsLayer.removeLayer(tempMarker);
-                };
-
-                overlay.onclick = function() {
-                    form.style.display = 'none';
-                    overlay.style.display = 'none';
-                    document.getElementById('spot-form').reset();
-                    spotsLayer.removeLayer(tempMarker);
-                };
-            });
-
-            fetch('http://localhost:3000/points')
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(point => {
-                        var marker = L.marker([point.lat, point.lng], { icon: spotIcon }).addTo(spotsLayer);
-                        var popupContent = '<b>' + point.nom + '</b><br>' + point.note;
-                        if (point.photo) {
-                            popupContent += '<br><img src="' + point.photo + '" alt="Photo" style="width:100px;">';
-                        }
-                        marker.bindPopup(popupContent);
-                    });
-                })
-                .catch(error => {
-                    console.error('Erreur lors du chargement des points:', error);
-                });
-        });
-    </script>
-</body>
-</html>
