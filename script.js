@@ -1,5 +1,7 @@
+// script.js
+
 document.addEventListener("DOMContentLoaded", function() {
-    var mymap = L.map('mapid').setView([0, 0], 13);
+    var mymap = L.map('mapid').setView([0, 0], 13); // Position initiale à [0, 0]
     var spotsLayer = L.layerGroup().addTo(mymap);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -15,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     var spotIcon = L.icon({
-        iconUrl: 'marqeur_jaune.png',
+        iconUrl: 'marqeur_jaune.png', // Assurez-vous que le chemin est correct
         iconSize: [25, 25],
         iconAnchor: [12, 24],
         popupAnchor: [0, -24]
@@ -45,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // Essayer de localiser l'utilisateur dès le chargement de la page
     locateUser();
 
     document.getElementById('locate-button').onclick = function() {
@@ -54,84 +57,73 @@ document.addEventListener("DOMContentLoaded", function() {
     mymap.on('click', function(e) {
         var form = document.getElementById('popup-form');
         var overlay = document.getElementById('overlay');
+        var formBounds = form.getBoundingClientRect();
+        var mapBounds = document.getElementById('mapid').getBoundingClientRect();
+
+        form.style.left = (e.originalEvent.clientX - formBounds.width / 2) + 'px';
+        form.style.top = (e.originalEvent.clientY - formBounds.height / 2) + 'px';
+
         form.style.display = 'block';
-        form.style.left = '50%';
-        form.style.top = '50%';
         overlay.style.display = 'block';
-
-        var tempMarker = L.marker(e.latlng, { icon: spotIcon }).addTo(spotsLayer);
-
-        document.querySelector('.banner').onclick = function() {
-            document.getElementById('photo').click();
-        };
 
         document.getElementById('spot-form').onsubmit = function(event) {
             event.preventDefault();
-            var name = document.getElementById('name').value;
-            var note = document.getElementById('note').value;
-            var photo = document.getElementById('photo').files[0];
+            const name = document.getElementById('name').value;
+            const note = document.getElementById('note').value;
+            const photo = document.getElementById('photo').files[0];
+            const token = localStorage.getItem('token');
 
-            var formData = new FormData();
+            const formData = new FormData();
             formData.append('nom', name);
             formData.append('lat', e.latlng.lat);
             formData.append('lng', e.latlng.lng);
             formData.append('note', note);
-            if (photo) {
-                formData.append('photo', photo);
-            }
+            formData.append('photo', photo);
 
             fetch('http://localhost:3000/points', {
                 method: 'POST',
-                body: formData,
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
+                    'Authorization': token
+                },
+                body: formData
             })
             .then(response => response.json())
             .then(data => {
-                tempMarker.bindPopup('<b>' + data.nom + '</b><br>' + data.note).openPopup();
+                if (data.message === 'Vous devez être connecté pour ajouter des points') {
+                    alert('Vous devez être connecté pour ajouter des points');
+                } else {
+                    var marker = L.marker([e.latlng.lat, e.latlng.lng], { icon: spotIcon }).addTo(spotsLayer);
+                    marker.bindPopup(`<b>${name}</b><br>${note}<br><img src="${data.photo}" style="width: 100px;">`);
+                    form.style.display = 'none';
+                    overlay.style.display = 'none';
+                }
             })
             .catch(error => {
                 console.error('Erreur:', error);
             });
-
-            form.style.display = 'none';
-            overlay.style.display = 'none';
-            document.getElementById('spot-form').reset();
         };
 
-        document.querySelector('.cancel').onclick = function() {
+        document.querySelector('#popup-form .cancel').onclick = function() {
             form.style.display = 'none';
             overlay.style.display = 'none';
-            document.getElementById('spot-form').reset();
-            spotsLayer.removeLayer(tempMarker);
-        };
-
-        overlay.onclick = function() {
-            form.style.display = 'none';
-            overlay.style.display = 'none';
-            document.getElementById('spot-form').reset();
-            spotsLayer.removeLayer(tempMarker);
         };
     });
 
-    fetch('http://localhost:3000/points', {
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        data.forEach(point => {
-            var marker = L.marker([point.lat, point.lng], { icon: spotIcon }).addTo(spotsLayer);
-            var popupContent = '<b>' + point.nom + '</b><br>' + point.note;
-            if (point.photo) {
-                popupContent += '<br><img src="' + point.photo + '" alt="Photo" style="width:100px;">';
-            }
-            marker.bindPopup(popupContent);
+    document.getElementById('overlay').onclick = function() {
+        document.getElementById('popup-form').style.display = 'none';
+        this.style.display = 'none';
+    };
+
+    // Chargement des points existants
+    fetch('http://localhost:3000/points')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(point => {
+                var marker = L.marker([point.lat, point.lng], { icon: spotIcon }).addTo(spotsLayer);
+                marker.bindPopup(`<b>${point.nom}</b><br>${point.note}<br><img src="${point.photo}" style="width: 100px;">`);
+            });
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
         });
-    })
-    .catch(error => {
-        console.error('Erreur lors du chargement des points:', error);
-    });
 });
