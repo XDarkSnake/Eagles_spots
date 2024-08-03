@@ -6,8 +6,8 @@
     <title>Eagles Spots</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Votre CSS principal -->
+    <link rel="stylesheet" href="auth.css"> <!-- CSS pour l'authentification -->
 </head>
 <body>
     <header>
@@ -15,10 +15,34 @@
             <i class="fas fa-user"></i>
         </button>
     </header>
+
     <div id="mapid"></div>
     <button id="locate-button">
         <i class="fas fa-crosshairs"></i>
     </button>
+
+    <!-- Formulaire d'authentification -->
+    <div id="auth-container">
+        <div id="login-form" class="form-container">
+            <h2>Connexion</h2>
+            <form>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Mot de passe" required>
+                <button type="submit">Se connecter</button>
+                <button type="button" id="register">Pas encore inscrit ?</button>
+            </form>
+        </div>
+        <div id="register-form" class="form-container hidden">
+            <h2>Inscription</h2>
+            <form>
+                <input type="email" id="register-email" placeholder="Email" required>
+                <input type="password" id="register-password" placeholder="Mot de passe" required>
+                <button type="submit">S'inscrire</button>
+                <button type="button" id="login">Déjà inscrit ?</button>
+            </form>
+        </div>
+    </div>
+
     <div id="overlay"></div>
     <div id="popup-form">
         <div class="banner">Importer une image</div>
@@ -33,60 +57,8 @@
         </form>
     </div>
 
-    <!-- Auth Forms -->
-    <div class="container" id="auth-container">
-        <div class="form-container sign-up">
-            <form id="register-form">
-                <h1>Create Account</h1>
-                <div class="social-icons">
-                    <a href="#" class="icons"><i class='bx bxl-google'></i></a>
-                    <a href="#" class="icons"><i class='bx bxl-facebook'></i></a>
-                    <a href="#" class="icons"><i class='bx bxl-github'></i></a>
-                    <a href="#" class="icons"><i class='bx bxl-linkedin'></i></a>
-                </div>
-                <span>Register with E-mail</span>
-                <input type="text" id="register-name" placeholder="Name">
-                <input type="email" id="register-email" placeholder="Enter E-mail">
-                <input type="password" id="register-password" placeholder="Enter Password">
-                <button type="submit">Sign Up</button>
-            </form>
-        </div>
-
-        <div class="form-container sign-in">
-            <form id="login-form">
-                <h1>Sign In</h1>
-                <div class="social-icons">
-                    <a href="#" class="icons"><i class='bx bxl-google'></i></a>
-                    <a href="#" class="icons"><i class='bx bxl-facebook'></i></a>
-                    <a href="#" class="icons"><i class='bx bxl-github'></i></a>
-                    <a href="#" class="icons"><i class='bx bxl-linkedin'></i></a>
-                </div>
-                <span>Login With Email & Password</span>
-                <input type="email" id="login-email" placeholder="Enter E-mail">
-                <input type="password" id="login-password" placeholder="Enter Password">
-                <a href="#">Forget Password?</a>
-                <button type="submit">Sign In</button>
-            </form>
-        </div>
-
-        <div class="toggle-container">
-            <div class="toggle">
-                <div class="toggle-panel toggle-left">
-                    <h1>Welcome To <br>Code with Patel</h1>
-                    <p>Sign in With ID & Passowrd</p>
-                    <button class="hidden" id="login">Sign In</button>
-                </div>
-                <div class="toggle-panel toggle-right">
-                    <h1>Hii Coder's</h1>
-                    <p>Join "Code With Patel" to Improve Your Coding Skills</p>
-                    <button class="hidden" id="register">Sign Up</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="script.js"></script>
     <script src="auth.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
