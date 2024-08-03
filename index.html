@@ -12,7 +12,7 @@
             font-family: Arial, sans-serif;
         }
         #mapid {
-            height: calc(100vh - 50px); /* Ajustement pour la hauteur de la barre de navigation */
+            height: calc(100vh - 50px);
             width: 100%;
         }
         .navbar {
@@ -217,11 +217,11 @@
                     mymap.removeLayer(userMarker);
                 }
                 userMarker = L.marker(e.latlng, { icon: userIcon }).addTo(mymap);
-                mymap.setView(e.latlng, 16);
+                mymap.setView(e.latlng, 13);
             }
 
             function onLocationError(e) {
-                alert('Erreur de géolocalisation: ' + e.message);
+                alert(e.message);
             }
 
             function locateUser() {
