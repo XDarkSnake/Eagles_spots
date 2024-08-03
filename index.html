@@ -4,59 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eagles Spots</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
         #mapid {
-            height: calc(100vh - 50px); /* Ajuste la hauteur pour prendre tout l'espace restant après la barre de navigation */
+            height: 100vh;
             width: 100%;
+        }
+        #header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: flex-end;
+            z-index: 1000;
+        }
+        #header button {
+            margin: 0 5px;
         }
     </style>
 </head>
 <body>
-    <div class="navbar">
+    <div id="header">
         <button id="login-button">Connexion</button>
-        <button id="register-button">Inscription</button>
+        <button id="signup-button">Inscription</button>
     </div>
-
     <div id="mapid"></div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var map = L.map('mapid').setView([51.505, -0.09], 13); // Position initiale
 
-    <div id="overlay"></div>
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
-    <div id="popup-form">
-        <div class="banner">Ajouter un Spot</div>
-        <form id="spot-form">
-            <label for="name">Nom :</label>
-            <input type="text" id="name" name="name" required>
-            <label for="note">Note :</label>
-            <textarea id="note" name="note" rows="4" required></textarea>
-            <label for="photo">Photo :</label>
-            <input type="file" id="photo" name="photo" accept="image/*">
-            <button type="submit">Ajouter</button>
-            <button type="button" class="cancel" onclick="hideForm()">Annuler</button>
-        </form>
-    </div>
-
-    <div class="auth-form" id="login-form">
-        <input type="text" id="login-username" placeholder="Nom d'utilisateur" required>
-        <input type="password" id="login-password" placeholder="Mot de passe" required>
-        <button onclick="login()">Se connecter</button>
-        <button class="close" onclick="hideForm()">Fermer</button>
-    </div>
-
-    <div class="auth-form" id="register-form">
-        <input type="text" id="register-username" placeholder="Nom d'utilisateur" required>
-        <input type="password" id="register-password" placeholder="Mot de passe" required>
-        <input type="password" id="register-password-confirm" placeholder="Confirmer le mot de passe" required>
-        <button onclick="register()">S'inscrire</button>
-        <button class="close" onclick="hideForm()">Fermer</button>
-    </div>
-
-    <button id="locate-button">
-        <i class="fa fa-crosshairs"></i>
-    </button>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
-    <script src="scripts.js"></script>
+            // Ajouter un marqueur pour tester
+            L.marker([51.5, -0.09]).addTo(map)
+                .bindPopup('Un marqueur.')
+                .openPopup();
+        });
+    </script>
 </body>
 </html>
