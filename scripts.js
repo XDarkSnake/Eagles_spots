@@ -53,8 +53,6 @@ document.addEventListener("DOMContentLoaded", function() {
         var form = document.getElementById('popup-form');
         var overlay = document.getElementById('overlay');
         form.style.display = 'block';
-        form.style.left = '50%';
-        form.style.top = '50%';
         overlay.style.display = 'block';
 
         var tempMarker = L.marker(e.latlng, { icon: spotIcon }).addTo(spotsLayer);
@@ -117,12 +115,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 var marker = L.marker([point.lat, point.lng], { icon: spotIcon }).addTo(spotsLayer);
                 var popupContent = '<b>' + point.nom + '</b><br>' + point.note;
                 if (point.photo) {
-                    popupContent += '<br><img src="' + point.photo + '" alt="Photo" style="width:100px;">';
+                    popupContent += '<br><img src="' + point.photo + '" alt="Photo" style="width: 100px; height: auto;">';
                 }
                 marker.bindPopup(popupContent);
             });
         })
         .catch(error => {
-            console.error('Erreur lors du chargement des points:', error);
+            console.error('Erreur:', error);
         });
 });
