@@ -1,62 +1,55 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const signUpForm = document.getElementById('sign-up-form');
-    const signInForm = document.getElementById('sign-in-form');
+/* auth.css */
 
-    signUpForm.addEventListener('submit', function(event) {
-        event.preventDefault();
+body {
+    font-family: Arial, sans-serif;
+}
 
-        const name = document.getElementById('sign-up-name').value;
-        const email = document.getElementById('sign-up-email').value;
-        const password = document.getElementById('sign-up-password').value;
+.container {
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 300px;
+    background: white;
+    z-index: 1001;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+}
 
-        fetch('http://localhost:3000/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, email, password })
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert('Inscription réussie !');
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-        });
-    });
+.show-container {
+    transform: translateX(0%);
+}
 
-    signInForm.addEventListener('submit', function(event) {
-        event.preventDefault();
+.form-container {
+    display: none;
+    padding: 20px;
+}
 
-        const email = document.getElementById('sign-in-email').value;
-        const password = document.getElementById('sign-in-password').value;
+form {
+    display: flex;
+    flex-direction: column;
+}
 
-        fetch('http://localhost:3000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        })
-        .then(response => response.json())
-        .then(data => {
-            localStorage.setItem('token', data.token);
-            alert('Connexion réussie !');
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-        });
-    });
+form input {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
 
-    const registerButton = document.getElementById('register');
-    const loginButton = document.getElementById('login');
-    const container = document.getElementById('container');
+form button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+}
 
-    registerButton.addEventListener('click', () => {
-        container.classList.add("sign-up-mode");
-    });
+.toggle-container {
+    position: relative;
+}
 
-    loginButton.addEventListener('click', () => {
-        container.classList.remove("sign-up-mode");
-    });
-});
+.hidden {
+    display: none;
+}
