@@ -6,150 +6,28 @@
     <title>Eagles Spots</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css"> <!-- Ajouter le fichier CSS pour l'en-tête et la connexion -->
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        #mapid {
-            height: calc(100vh - 60px); /* Ajuster la hauteur pour l'en-tête */
-            width: 100%;
-            position: relative;
-        }
-        #locate-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            background-color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            padding: 10px;
-        }
-        .fa-crosshairs {
-            font-size: 24px;
-            color: blue;
-        }
-        #overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-        }
-        #popup-form {
-            display: none;
-            position: fixed;
-            background-color: white;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            width: 300px;
-            max-width: 80%;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
-        #popup-form .banner {
-            background-color: blue;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            border-radius: 5px 5px 0 0;
-            cursor: pointer;
-        }
-        #popup-form form {
-            display: flex;
-            flex-direction: column;
-        }
-        #popup-form label {
-            margin-top: 10px;
-        }
-        #popup-form input[type="text"], #popup-form textarea {
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            width: calc(100% - 12px);
-        }
-        #popup-form button {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: blue;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #popup-form button.cancel {
-            background-color: red;
-        }
-
-        /* Styles pour l'en-tête */
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-        }
-        .header-logo {
-            font-size: 24px;
-        }
-        .header-logo img {
-            width: 30px;
-            vertical-align: middle;
-        }
-        .header-button {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        #login-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 300px;
-            height: 100vh;
-            background: #fff;
-            box-shadow: -4px 0 10px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            z-index: 1001;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-        }
-        #login-container.active {
-            transform: translateX(0);
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- En-tête -->
     <header>
         <div class="header-logo">
-            <img src="logo.png" alt="Logo"> Eagles Spots
+            <img src="logo.png" alt="Logo">
+            <span>Eagles Spots</span>
         </div>
-        <button class="header-button" id="toggle-login">
+        <button id="login-btn" class="header-button">
             <i class="fas fa-user"></i>
         </button>
     </header>
 
+    <!-- Carte -->
+    <div id="mapid"></div>
+    <button id="locate-button">
+        <i class="fas fa-crosshairs"></i>
+    </button>
+
+    <!-- Formulaire de connexion -->
     <div id="login-container">
-        <!-- Inclure le code HTML pour le formulaire de connexion ici -->
         <div class="container" id="container">
             <div class="form-container sign-up">
                 <form>
@@ -189,7 +67,7 @@
                 <div class="toggle">
                     <div class="toggle-panel toggle-left">
                         <h1>Welcome To <br>Code with Patel</h1>
-                        <p>Sign in With ID & Passowrd</p>
+                        <p>Sign in With ID & Password</p>
                         <button class="hidden" id="login">Sign In</button>
                     </div>
                     <div class="toggle-panel toggle-right">
@@ -202,11 +80,7 @@
         </div>
     </div>
 
-    <div id="mapid"></div>
-    <button id="locate-button">
-        <i class="fas fa-crosshairs"></i>
-    </button>
-    <div id="overlay"></div>
+    <!-- Formulaire d'ajout de point -->
     <div id="popup-form">
         <div class="banner">Importer une image</div>
         <form id="spot-form">
@@ -219,150 +93,11 @@
             <button type="button" class="cancel">Annuler</button>
         </form>
     </div>
+
+    <!-- Overlay -->
+    <div id="overlay"></div>
+
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="script.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var mymap = L.map('mapid').setView([0, 0], 13); // Position initiale à [0, 0]
-            var spotsLayer = L.layerGroup().addTo(mymap);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(mymap);
-
-            var userMarker;
-            var userIcon = L.divIcon({
-                className: 'user-icon',
-                html: '<div style="background-color: blue; width: 10px; height: 10px; border-radius: 50%;"></div>',
-                iconSize: [12, 12],
-                iconAnchor: [6, 6]
-            });
-
-            var spotIcon = L.icon({
-                iconUrl: 'marqeur_jaune.png', // Assurez-vous que le chemin est correct
-                iconSize: [25, 25],
-                iconAnchor: [12, 24],
-                popupAnchor: [0, -24]
-            });
-
-            function onLocationFound(e) {
-                if (userMarker) {
-                    mymap.removeLayer(userMarker);
-                }
-                userMarker = L.marker(e.latlng, { icon: userIcon }).addTo(mymap);
-                mymap.setView(e.latlng, 16);
-            }
-
-            function onLocationError(e) {
-                alert('Erreur de géolocalisation: ' + e.message);
-            }
-
-            function locateUser() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                        var lat = position.coords.latitude;
-                        var lng = position.coords.longitude;
-                        onLocationFound({ latlng: L.latLng(lat, lng) });
-                    }, onLocationError, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
-                } else {
-                    alert("La géolocalisation n'est pas supportée par ce navigateur.");
-                }
-            }
-
-            // Essayer de localiser l'utilisateur dès le chargement de la page
-            locateUser();
-
-            document.getElementById('locate-button').onclick = function() {
-                locateUser();
-            };
-
-            mymap.on('click', function(e) {
-                if (!localStorage.getItem('loggedIn')) {
-                    alert('Vous devez être connecté pour ajouter un point.');
-                    return;
-                }
-
-                var form = document.getElementById('popup-form');
-                var overlay = document.getElementById('overlay');
-                form.style.display = 'block';
-                form.style.left = '50%';
-                form.style.top = '50%';
-                overlay.style.display = 'block';
-
-                var tempMarker = L.marker(e.latlng, { icon: spotIcon }).addTo(spotsLayer);
-
-                document.querySelector('.banner').onclick = function() {
-                    document.getElementById('photo').click();
-                };
-
-                document.getElementById('spot-form').onsubmit = function(event) {
-                    event.preventDefault();
-                    var name = document.getElementById('name').value;
-                    var note = document.getElementById('note').value;
-                    var photo = document.getElementById('photo').files[0];
-
-                    var formData = new FormData();
-                    formData.append('nom', name);
-                    formData.append('lat', e.latlng.lat);
-                    formData.append('lng', e.latlng.lng);
-                    formData.append('note', note);
-                    if (photo) {
-                        formData.append('photo', photo);
-                    }
-
-                    fetch('http://localhost:3000/points', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        tempMarker.bindPopup('<b>' + data.nom + '</b><br>' + data.note).openPopup();
-                    })
-                    .catch(error => {
-                        console.error('Erreur:', error);
-                    });
-
-                    form.style.display = 'none';
-                    overlay.style.display = 'none';
-                    document.getElementById('spot-form').reset();
-                };
-
-                document.querySelector('.cancel').onclick = function() {
-                    form.style.display = 'none';
-                    overlay.style.display = 'none';
-                    document.getElementById('spot-form').reset();
-                    spotsLayer.removeLayer(tempMarker);
-                };
-
-                overlay.onclick = function() {
-                    form.style.display = 'none';
-                    overlay.style.display = 'none';
-                    document.getElementById('spot-form').reset();
-                    spotsLayer.removeLayer(tempMarker);
-                };
-            });
-
-            fetch('http://localhost:3000/points')
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(point => {
-                        var marker = L.marker([point.lat, point.lng], { icon: spotIcon }).addTo(spotsLayer);
-                        var popupContent = '<b>' + point.nom + '</b><br>' + point.note;
-                        if (point.photo) {
-                            popupContent += '<br><img src="' + point.photo + '" alt="Photo" style="width:100px;">';
-                        }
-                        marker.bindPopup(popupContent);
-                    });
-                })
-                .catch(error => {
-                    console.error('Erreur lors du chargement des points:', error);
-                });
-
-            // Script pour ouvrir/fermer le menu de connexion
-            document.getElementById('toggle-login').onclick = function() {
-                document.getElementById('login-container').classList.toggle('active');
-            };
-        });
-    </script>
 </body>
 </html>
