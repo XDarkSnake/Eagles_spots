@@ -235,4 +235,9 @@
 
             locateUser();
 
-            document.getElementBy
+            document.getElementById('locate-button').onclick = function() {
+                locateUser();
+            };
+
+            mymap.on('click', function(e) {
+                var form = document.getElementById('popup-form');
