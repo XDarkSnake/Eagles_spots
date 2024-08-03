@@ -151,8 +151,8 @@
 <body>
     <div id="mapid"></div>
     <div class="auth-buttons">
-        <button onclick="showForm('login')">Connexion</button>
-        <button onclick="showForm('register')">Inscription</button>
+        <button onclick="showForm('login-form')">Connexion</button>
+        <button onclick="showForm('register-form')">Inscription</button>
     </div>
     <button id="locate-button">
         <i class="fas fa-crosshairs"></i>
@@ -241,4 +241,5 @@
 
             mymap.on('click', function(e) {
                 var form = document.getElementById('popup-form');
-                form.style
+                form.style.display = 'block';
+                document.getElementById('overlay').style.display = '
