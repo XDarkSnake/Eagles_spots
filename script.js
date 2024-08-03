@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     var spotIcon = L.icon({
-        iconUrl: 'marqeur_jaune.png', // Assurez-vous que le chemin est correct
+        iconUrl: 'marqeur_jaune.png',
         iconSize: [25, 25],
         iconAnchor: [12, 24],
         popupAnchor: [0, -24]
@@ -47,7 +47,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Essayer de localiser l'utilisateur dès le chargement de la page
     locateUser();
 
     document.getElementById('locate-button').onclick = function() {
@@ -57,6 +56,13 @@ document.addEventListener("DOMContentLoaded", function() {
     mymap.on('click', function(e) {
         var form = document.getElementById('popup-form');
         var overlay = document.getElementById('overlay');
+        var token = localStorage.getItem('token');
+
+        if (!token) {
+            alert('Vous devez être connecté pour ajouter des points.');
+            return;
+        }
+
         var formBounds = form.getBoundingClientRect();
         var mapBounds = document.getElementById('mapid').getBoundingClientRect();
 
@@ -71,7 +77,6 @@ document.addEventListener("DOMContentLoaded", function() {
             const name = document.getElementById('name').value;
             const note = document.getElementById('note').value;
             const photo = document.getElementById('photo').files[0];
-            const token = localStorage.getItem('token');
 
             const formData = new FormData();
             formData.append('nom', name);
@@ -114,7 +119,6 @@ document.addEventListener("DOMContentLoaded", function() {
         this.style.display = 'none';
     };
 
-    // Chargement des points existants
     fetch('http://localhost:3000/points')
         .then(response => response.json())
         .then(data => {
