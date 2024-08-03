@@ -24,7 +24,8 @@
             justify-content: flex-end;
             align-items: center;
             padding: 0 20px;
-            position: relative;
+            position: fixed;
+            top: 0;
             z-index: 1000;
         }
         .navbar button {
@@ -112,7 +113,6 @@
         #popup-form button.cancel {
             background-color: red;
         }
-        /* Styles pour les formulaires de connexion et d'inscription */
         .auth-form {
             display: none;
             position: fixed;
@@ -238,4 +238,50 @@
 
             locateUser();
 
-            document.get
+            document.getElementById('locate-button').addEventListener('click', function() {
+                locateUser();
+            });
+
+            document.getElementById('spot-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                var name = document.getElementById('name').value;
+                var note = document.getElementById('note').value;
+                var photo = document.getElementById('photo').files[0];
+                if (name && note) {
+                    alert('Spot ajouté : ' + name);
+                }
+            });
+
+            function showForm(formId) {
+                document.getElementById('overlay').style.display = 'block';
+                document.getElementById(formId).style.display = 'block';
+            }
+
+            function hideForm() {
+                document.getElementById('overlay').style.display = 'none';
+                document.querySelectorAll('.auth-form').forEach(function(form) {
+                    form.style.display = 'none';
+                });
+                document.getElementById('popup-form').style.display = 'none';
+            }
+
+            function login() {
+                var username = document.getElementById('login-username').value;
+                var password = document.getElementById('login-password').value;
+                alert('Connexion : ' + username);
+            }
+
+            function register() {
+                var username = document.getElementById('register-username').value;
+                var password = document.getElementById('register-password').value;
+                var passwordConfirm = document.getElementById('register-password-confirm').value;
+                if (password === passwordConfirm) {
+                    alert('Inscription : ' + username);
+                } else {
+                    alert('Les mots de passe ne correspondent pas');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
