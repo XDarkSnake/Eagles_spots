@@ -108,18 +108,55 @@
         .auth-buttons button:hover {
             background-color: darkblue;
         }
+        /* Styles pour les formulaires de connexion et d'inscription */
+        .auth-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+        }
+        .auth-form input {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .auth-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .auth-form button:hover {
+            background-color: darkblue;
+        }
+        .auth-form .close {
+            background-color: red;
+        }
     </style>
 </head>
 <body>
     <div id="mapid"></div>
     <div class="auth-buttons">
-        <button onclick="window.location.href='connexion/index.html'">Connexion</button>
-        <button onclick="window.location.href='connexion/index.html'">Inscription</button>
+        <button onclick="showForm('login')">Connexion</button>
+        <button onclick="showForm('register')">Inscription</button>
     </div>
     <button id="locate-button">
         <i class="fas fa-crosshairs"></i>
     </button>
-    <div id="overlay"></div>
+    <div id="overlay" onclick="hideForm()"></div>
     <div id="popup-form">
         <div class="banner">Importer une image</div>
         <form id="spot-form">
@@ -131,6 +168,21 @@
             <button type="submit">Ajouter</button>
             <button type="button" class="cancel">Annuler</button>
         </form>
+    </div>
+    <div id="login-form" class="auth-form">
+        <h2>Connexion</h2>
+        <input type="text" id="login-username" placeholder="Nom d'utilisateur">
+        <input type="password" id="login-password" placeholder="Mot de passe">
+        <button onclick="login()">Connexion</button>
+        <button class="close" onclick="hideForm()">Fermer</button>
+    </div>
+    <div id="register-form" class="auth-form">
+        <h2>Inscription</h2>
+        <input type="text" id="register-username" placeholder="Nom d'utilisateur">
+        <input type="password" id="register-password" placeholder="Mot de passe">
+        <input type="password" id="register-password-confirm" placeholder="Confirmez le mot de passe">
+        <button onclick="register()">Inscription</button>
+        <button class="close" onclick="hideForm()">Fermer</button>
     </div>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
@@ -183,54 +235,4 @@
 
             locateUser();
 
-            document.getElementById('locate-button').onclick = function() {
-                locateUser();
-            };
-
-            mymap.on('click', function(e) {
-                var form = document.getElementById('popup-form');
-                var overlay = document.getElementById('overlay');
-                form.style.display = 'block';
-                form.style.left = '50%';
-                form.style.top = '50%';
-                overlay.style.display = 'block';
-
-                var tempMarker = L.marker(e.latlng, { icon: spotIcon }).addTo(spotsLayer);
-
-                document.querySelector('.banner').onclick = function() {
-                    document.getElementById('photo').click();
-                };
-
-                document.getElementById('spot-form').onsubmit = function(event) {
-                    event.preventDefault();
-                    var name = document.getElementById('name').value;
-                    var note = document.getElementById('note').value;
-                    var photo = document.getElementById('photo').files[0];
-
-                    var formData = new FormData();
-                    formData.append('nom', name);
-                    formData.append('lat', e.latlng.lat);
-                    formData.append('lng', e.latlng.lng);
-                    formData.append('note', note);
-                    if (photo) {
-                        formData.append('photo', photo);
-                    }
-
-                    fetch('http://localhost:3000/points', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        tempMarker.bindPopup('<b>' + data.nom + '</b><br>' + data.note).openPopup();
-                    })
-                    .catch(error => {
-                        console.error('Erreur:', error);
-                    });
-
-                    form.style.display = 'none';
-                    overlay.style.display = 'none';
-                    document.getElementById('spot-form').reset();
-                };
-
-                document.querySelector('.cancel').onclick = function() {
+            document.getElementBy
