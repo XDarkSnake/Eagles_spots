@@ -1,10 +1,6 @@
 /* auth.css */
 
-body {
-    font-family: Arial, sans-serif;
-}
-
-.container {
+#auth-container {
     position: fixed;
     right: 0;
     top: 0;
@@ -16,18 +12,16 @@ body {
     transition: transform 0.3s ease-in-out;
 }
 
-.show-container {
+#auth-container.show-container {
     transform: translateX(0%);
 }
 
 .form-container {
-    display: none;
     padding: 20px;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
+.hidden {
+    display: none;
 }
 
 form input {
@@ -46,10 +40,6 @@ form button {
     cursor: pointer;
 }
 
-.toggle-container {
-    position: relative;
-}
-
-.hidden {
-    display: none;
+form h2 {
+    margin-top: 0;
 }
