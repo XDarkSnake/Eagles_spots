@@ -1,28 +1,37 @@
-const container = document.getElementById('container');
-const registerBtn = document.getElementById('register');
-const loginBtn = document.getElementById('login');
-const header = document.getElementById('header');
-const loginButton = document.getElementById('login-btn');
+document.addEventListener('DOMContentLoaded', () => {
+    const header = document.getElementById('header');
+    const map = document.getElementById('map');
+    const loginBtn = document.getElementById('login-btn');
+    const loginContainer = document.getElementById('login-container');
+    const container = document.getElementById('container');
+    const registerBtn = document.getElementById('register');
+    const login = document.getElementById('login');
 
-// Toggle between sign-in and sign-up forms
-registerBtn.addEventListener('click', () => {
-    container.classList.add("active");
-});
+    // Afficher la bannière lorsque l'utilisateur survole le haut de la page
+    document.addEventListener('mousemove', (e) => {
+        if (e.clientY < 50) {
+            header.style.display = 'block';
+        } else {
+            header.style.display = 'none';
+        }
+    });
 
-loginBtn.addEventListener('click', () => {
-    container.classList.remove("active");
-});
+    // Afficher/masquer le formulaire de connexion
+    loginBtn.addEventListener('click', () => {
+        loginContainer.style.display = 'block';
+    });
 
-// Show header when cursor is near the top of the page
-window.addEventListener('scroll', () => {
-    if (window.scrollY < 50) {
-        header.style.top = '0';
-    } else {
-        header.style.top = '-60px'; // Adjust to hide the header
-    }
-});
+    loginContainer.addEventListener('click', (e) => {
+        if (e.target === loginContainer) {
+            loginContainer.style.display = 'none';
+        }
+    });
 
-// Open the login form when the login button is clicked
-loginButton.addEventListener('click', () => {
-    container.classList.add("active");
+    registerBtn.addEventListener('click', () => {
+        container.classList.add('active');
+    });
+
+    login.addEventListener('click', () => {
+        container.classList.remove('active');
+    });
 });
