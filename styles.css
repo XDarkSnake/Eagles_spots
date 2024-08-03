@@ -8,7 +8,7 @@ body {
 header {
     background-color: #333;
     color: #fff;
-    padding: 15px;
+    padding: 10px; /* Réduit la hauteur de l'en-tête */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -17,18 +17,18 @@ header {
     top: 0;
     left: 0;
     z-index: 1000;
-    height: 60px; /* Assurez-vous que la hauteur correspond */
+    height: 50px; /* Ajuste la hauteur pour l'en-tête */
 }
 
 /* Logo de l'en-tête */
 .header-logo {
-    font-size: 24px;
+    font-size: 20px; /* Réduit la taille de la police */
     display: flex;
     align-items: center;
 }
 
 .header-logo img {
-    width: 30px;
+    width: 25px; /* Réduit la taille du logo */
     vertical-align: middle;
     margin-right: 10px;
 }
@@ -44,23 +44,25 @@ header {
 
 /* Styles pour la carte */
 #mapid {
-    height: calc(100vh - 60px); /* Ajuste la hauteur pour l'en-tête */
+    height: calc(100vh - 50px); /* Ajuste la hauteur pour l'en-tête */
     width: 100%;
     position: relative;
-    margin-top: 60px; /* Espace pour éviter que la carte soit coupée par l'en-tête */
+    margin-top: 50px; /* Espace pour éviter que la carte soit coupée par l'en-tête */
 }
 
 /* Bouton de localisation */
 #locate-button {
     position: absolute;
-    bottom: 10px; /* Place le bouton en bas de la carte */
+    top: 10px; /* Place le bouton en haut de la carte */
     right: 10px; /* À droite sur la carte */
-    z-index: 1000;
-    background-color: white;
+    background-color: blue; /* Couleur bleue */
+    color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 50%;
     cursor: pointer;
-    padding: 10px;
+    padding: 15px; /* Augmente la taille du bouton */
+    font-size: 18px;
+    z-index: 1000;
 }
 
 /* Styles pour le menu de connexion */
@@ -125,7 +127,7 @@ header {
     display: none;
     position: fixed;
     background-color: white;
-    padding: 15px;
+    padding: 10px; /* Réduit la taille de la bannière */
     border: 1px solid #ddd;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -140,7 +142,7 @@ header {
 #popup-form .banner {
     background-color: blue;
     color: white;
-    padding: 10px;
+    padding: 5px; /* Réduit l'épaisseur de la bannière */
     text-align: center;
     border-radius: 5px 5px 0 0;
     cursor: pointer;
