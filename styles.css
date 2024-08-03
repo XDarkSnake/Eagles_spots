@@ -1,0 +1,189 @@
+/* Styles globaux */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Styles pour l'en-tête */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: 60px; /* Assurez-vous que la hauteur correspond */
+}
+
+/* Logo de l'en-tête */
+.header-logo {
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.header-logo img {
+    width: 30px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+/* Bouton de l'en-tête */
+.header-button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Styles pour la carte */
+#mapid {
+    height: calc(100vh - 60px); /* Ajuste la hauteur pour l'en-tête */
+    width: 100%;
+    position: relative;
+    margin-top: 60px; /* Espace pour éviter que la carte soit coupée par l'en-tête */
+}
+
+/* Bouton de localisation */
+#locate-button {
+    position: absolute;
+    bottom: 10px; /* Place le bouton en bas de la carte */
+    right: 10px; /* À droite sur la carte */
+    z-index: 1000;
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+/* Styles pour le menu de connexion */
+#login-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    z-index: 1001;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+#login-container.active {
+    transform: translateX(0);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+}
+
+.social-icons .icons {
+    margin: 0 5px;
+    font-size: 24px;
+}
+
+.toggle-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.toggle-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Styles pour le formulaire de connexion */
+#popup-form {
+    display: none;
+    position: fixed;
+    background-color: white;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 300px;
+    max-width: 80%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#popup-form .banner {
+    background-color: blue;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+}
+
+#popup-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+#popup-form label {
+    margin-top: 10px;
+}
+
+#popup-form input[type="text"], #popup-form textarea {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    width: calc(100% - 12px);
+}
+
+#popup-form button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#popup-form button.cancel {
+    background-color: red;
+}
+
+/* Styles pour l'overlay */
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
