@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const header = document.getElementById('header');
-    const map = document.getElementById('map');
     const loginBtn = document.getElementById('login-btn');
     const loginContainer = document.getElementById('login-container');
     const container = document.getElementById('container');
@@ -10,20 +9,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Afficher la bannière lorsque l'utilisateur survole le haut de la page
     document.addEventListener('mousemove', (e) => {
         if (e.clientY < 50) {
-            header.style.display = 'block';
+            header.style.top = '0'; // Afficher la bannière
         } else {
-            header.style.display = 'none';
+            header.style.top = '-60px'; // Masquer la bannière
         }
     });
 
     // Afficher/masquer le formulaire de connexion
     loginBtn.addEventListener('click', () => {
         loginContainer.style.display = 'block';
+        setTimeout(() => loginContainer.style.transform = 'translateX(0)', 10); // Animation en douceur
     });
 
     loginContainer.addEventListener('click', (e) => {
         if (e.target === loginContainer) {
-            loginContainer.style.display = 'none';
+            loginContainer.style.transform = 'translateX(100%)';
+            setTimeout(() => loginContainer.style.display = 'none', 500); // Délai pour l'animation
         }
     });
 
